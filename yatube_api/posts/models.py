@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+
 User = get_user_model()
+
 
 class Group(models.Model):
     title = models.CharField(
@@ -25,7 +27,7 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
         related_name="follows",
         verbose_name="Подписчик",
-        help_text="""Укажите имя пользователя который 
+        help_text="""Укажите имя пользователя который
         подпишется на другого пользователя""",
     )
     following = models.ForeignKey(
@@ -44,7 +46,8 @@ class Follow(models.Model):
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
         constraints = [
-            models.UniqueConstraint(fields=["user", "following"], name="unique_follow")
+            models.UniqueConstraint(
+                fields=["user", "following"], name="unique_follow")
         ]
 
 
@@ -52,10 +55,15 @@ class Post(models.Model):
     text = models.TextField("Текс поста")
     pub_date = models.DateTimeField("Дата публикации", auto_now_add=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="posts", verbose_name="Автор"
+        User,
+        on_delete=models.CASCADE,
+        related_name="posts",
+        verbose_name="Автор"
     )
     image = models.ImageField(
-        upload_to="posts/", null=True, blank=True, verbose_name="Изображение"
+        upload_to="posts/",
+        null=True, blank=True,
+        verbose_name="Изображение"
     )
     group = models.ForeignKey(
         Group,
@@ -88,8 +96,8 @@ class Comment(models.Model):
         related_name="comments",
         verbose_name="Пост",
         help_text="""
-        укажите id поста на 
-        который хотите оставить комментарий""",
+        укажите id поста на
+         который хотите оставить комментарий""",
     )
     text = models.TextField("Текст комментария")
     created = models.DateTimeField("Дата добавления", auto_now_add=True, db_index=True)
