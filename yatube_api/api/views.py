@@ -59,10 +59,11 @@ class CommentViewSet(viewsets.ModelViewSet):
         )
 
 
-class FollowViewSet(ListModelMixin,
-                    CreateModelMixin,
-                    viewsets.GenericViewSet,
-                ):
+class FollowViewSet(
+    ListModelMixin,
+    CreateModelMixin,
+    viewsets.GenericViewSet,
+):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.SearchFilter, )
@@ -70,7 +71,6 @@ class FollowViewSet(ListModelMixin,
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
